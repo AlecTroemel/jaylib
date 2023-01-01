@@ -74,12 +74,30 @@
 [x] void TakeScreenshot(const char *fileName)
 
 // Files management functions
-[x] char **GetDroppedFiles(int *count)
-[x] void ClearDroppedFiles(void)
-
-// Persistent storage management
-[x] void SaveStorageValue(int position, int value)
-[x] int LoadStorageValue(int position)
+[ ] unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead)
+[ ] void UnloadFileData(unsigned char *data)
+[ ] bool SaveFileData(const char *fileName, void *data, unsigned int bytesToWrite)
+[ ] bool ExportDataAsCode(const char *data, unsigned int size, const char *fileName)
+[ ] char *LoadFileText(const char *fileName)
+[ ] void UnloadFileText(char *text)
+[ ] bool SaveFileText(const char *fileName, char *text)
+[ ] bool FileExists(const char *fileName)
+[ ] bool DirectoryExists(const char *dirPath)
+[ ] bool IsFileExtension(const char *fileName, const char *ext)
+[ ] int GetFileLength(const char *fileName)
+[ ] const char *GetFileExtension(const char *fileName)
+[ ] const char *GetFileName(const char *filePath)
+[ ] const char *GetFileNameWithoutExt(const char *filePath)
+[ ] const char *GetDirectoryPath(const char *filePath)
+[ ] const char *GetPrevDirectoryPath(const char *dirPath)
+[ ] const char *GetWorkingDirectory(void)
+[ ] const char *GetApplicationDirectory(void)
+[ ] bool ChangeDirectory(const char *dir)
+[ ] bool IsPathFile(const char *path)
+[ ] FilePathList LoadDirectoryFiles(const char *dirPath);
+[ ] FilePathList LoadDirectoryFilesEx(const char *basePath, const char *filter, bool scanSubdirs);
+[x] FilePathList LoadDroppedFiles(void)
+[x] void UnloadDroppedFiles(FilePathList files)
 
 [x] void OpenURL(const char *url)
 
@@ -432,6 +450,7 @@
 [x] bool IsSoundPlaying(Sound sound)
 [x] void SetSoundVolume(Sound sound, float volume)
 [x] void SetSoundPitch(Sound sound, float pitch)
+[x] void SetSoundPan(Sound sound, float pan);
 [ ] void WaveFormat(Wave *wave, int sampleRate, int sampleSize, int channels)
 [x] Wave WaveCopy(Wave wave)
 [ ] void WaveCrop(Wave *wave, int initSample, int finalSample)
@@ -445,9 +464,11 @@
 [x] void StopMusicStream(Music music)
 [x] void PauseMusicStream(Music music)
 [x] void ResumeMusicStream(Music music)
+[x] void SeekMusicStream(Music music, float position)
 [x] bool IsMusicPlaying(Music music)
 [x] void SetMusicVolume(Music music, float volume)
 [x] void SetMusicPitch(Music music, float pitch)
+[x] void SetMusicPan(Music music, float pan);
 [x] float GetMusicTimeLength(Music music)
 [x] float GetMusicTimePlayed(Music music)
 
@@ -463,4 +484,4 @@
 [x] void StopAudioStream(AudioStream stream)
 [x] void SetAudioStreamVolume(AudioStream stream, float volume)
 [x] void SetAudioStreamPitch(AudioStream stream, float pitch)
-
+[x] void SetMusicPan(Music music, float pan);

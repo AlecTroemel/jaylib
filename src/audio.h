@@ -141,6 +141,14 @@ static Janet cfun_SetSoundPitch(int32_t argc, Janet *argv) {
     return janet_wrap_nil();
 }
 
+static Janet cfun_SetSoundPan(int32_t argc, Janet *argv) {
+  janet_fixarity(argc, 2);
+  Sound sound = *jaylib_getsound(argv, 0);
+  float pan = (float) janet_getnumber(argv, 1);
+  SetSoundPan(sound, pan);
+  return janet_wrap_nil();
+}
+
 static Janet cfun_WaveCopy(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
     Wave wave = *jaylib_getwave(argv, 0);
@@ -199,6 +207,14 @@ static Janet cfun_ResumeMusicStream(int32_t argc, Janet *argv) {
     return janet_wrap_nil();
 }
 
+static Janet cfun_SeekMusicStream(int32_t argc, Janet *argv) {
+  janet_fixarity(argc, 1);
+  Music music = *jaylib_getmusic(argv, 0);
+  float position = (float) janet_getnumber(argv, 1);
+  SeekMusicStream(music, position);
+  return janet_wrap_nil();
+}
+
 static Janet cfun_IsMusicStreamPlaying(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
     Music music = *jaylib_getmusic(argv, 0);
@@ -220,6 +236,15 @@ static Janet cfun_SetMusicPitch(int32_t argc, Janet *argv) {
     SetMusicPitch(music, pitch);
     return janet_wrap_nil();
 }
+
+static Janet cfun_SetMusicPan(int32_t argc, Janet *argv) {
+  janet_fixarity(argc, 2);
+  Music music = *jaylib_getmusic(argv, 0);
+  float pan = (float) janet_getnumber(argv, 1);
+  SetMusicPan(music, pan);
+  return janet_wrap_nil();
+}
+
 
 static Janet cfun_GetMusicTimeLength(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
@@ -315,6 +340,14 @@ static Janet cfun_SetAudioStreamPitch(int32_t argc, Janet *argv) {
     return janet_wrap_nil();
 }
 
+static Janet cfun_SetAudioStreamPan(int32_t argc, Janet *argv) {
+  janet_fixarity(argc, 2);
+  AudioStream stream = *jaylib_getaudiostream(argv, 0);
+  float pan = (float) janet_getnumber(argv, 1);
+  SetAudioStreamPan(stream, pan);
+  return janet_wrap_nil();
+}
+
 /*
 // AudioStream management functions
 [ ] void PlayAudioStream(AudioStream stream)
@@ -345,6 +378,7 @@ static JanetReg audio_cfuns[] = {
     {"sound-playing?", cfun_IsSoundPlaying, NULL},
     {"set-sound-volume", cfun_SetSoundVolume, NULL},
     {"set-sound-pitch", cfun_SetSoundPitch, NULL},
+    {"set-sound-pan", cfun_SetSoundPan, NULL},
     {"wave-copy", cfun_WaveCopy, NULL},
     {"load-music-stream", cfun_LoadMusicStream, NULL},
     {"unload-music-stream", cfun_UnloadMusicStream, NULL},
@@ -353,9 +387,11 @@ static JanetReg audio_cfuns[] = {
     {"pause-music-stream", cfun_PauseMusicStream, NULL},
     {"stop-music-stream", cfun_StopMusicStream, NULL},
     {"resume-music-stream", cfun_ResumeMusicStream, NULL},
+    {"seek-music-stream", cfun_SeekMusicStream, NULL},
     {"music-stream-playing?", cfun_IsMusicStreamPlaying, NULL},
     {"set-music-volume", cfun_SetMusicVolume, NULL},
     {"set-music-pitch", cfun_SetMusicPitch, NULL},
+    {"set-music-pan", cfun_SetMusicPan, NULL},
     {"get-music-time-length", cfun_GetMusicTimeLength, NULL},
     {"get-music-time-played", cfun_GetMusicTimePlayed, NULL},
     {"load-audio-stream", cfun_LoadAudioStream, NULL},
@@ -369,5 +405,6 @@ static JanetReg audio_cfuns[] = {
     {"resume-audio-stream", cfun_ResumeAudioStream, NULL},
     {"set-audio-stream-volume", cfun_SetAudioStreamVolume, NULL},
     {"set-audio-stream-pitch", cfun_SetAudioStreamPitch, NULL},
+    {"set-audio-stream-pan", cfun_SetAudioStreamPan, NULL},
     {NULL, NULL, NULL}
 };
