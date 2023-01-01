@@ -576,3 +576,12 @@ static const JanetAbstractType AT_Camera3D = {
 static Camera3D *jaylib_getcamera3d(const Janet *argv, int32_t n) {
     return ((Camera3D *)janet_getabstract(argv, n, &AT_Camera3D));
 }
+
+static const JanetAbstractType AT_FilePathList = {
+  "jaylib/file-path-list",
+  JANET_ATEND_NAME
+};
+
+static FilePathList *jaylib_getfilepathlist(const Janet *argv, int32_t n) {
+  return ((FilePathList *)janet_getabstract(argv, n, &AT_FilePathList));
+}

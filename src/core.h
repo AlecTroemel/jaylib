@@ -667,38 +667,20 @@ static Janet cfun_GetTouchPosition(int32_t argc, Janet *argv) {
     return jaylib_wrap_vec2(pos);
 }
 
-static Janet cfun_GetDroppedFiles(int32_t argc, Janet *argv) {
+static Janet cfun_LoadDroppedFiles(int32_t argc, Janet *argv) {
     (void) argv;
     janet_fixarity(argc, 0);
-    int count;
-    /* Do we need to free this/these? */
-    char **results = GetDroppedFiles(&count);
-    JanetArray *array = janet_array(0);
-    for (int i = 0; i < count; i++) {
-        janet_array_push(array, janet_cstringv(results[i]));
-    }
-    return janet_wrap_array(results);
+    FilePathList *pathList = janet_abstract(&AT_FilePathList, sizeof(FilePathList));
+    *pathList = LoadDroppedFiles();
+    return janet_wrap_abstract(pathList);
 }
 
-static Janet cfun_ClearDroppedFiles(int32_t argc, Janet *argv) {
+static Janet cfun_UnloadDroppedFiles(int32_t argc, Janet *argv) {
     (void) argv;
-    janet_fixarity(argc, 0);
-    ClearDroppedFiles();
-    return janet_wrap_nil();
-}
-
-static Janet cfun_SaveStorageValue(int32_t argc, Janet *argv) {
-    janet_fixarity(argc, 2);
-    int32_t position = janet_getinteger(argv, 0);
-    int32_t value = janet_getinteger(argv, 1);
-    SaveStorageValue(position, value);
-    return janet_wrap_nil();
-}
-
-static Janet cfun_LoadStorageValue(int32_t argc, Janet *argv) {
     janet_fixarity(argc, 1);
-    int32_t position = janet_getinteger(argv, 0);
-    return janet_wrap_integer(LoadStorageValue(position));
+    FilePathList pathList = *jaylib_getfilepathlist(argv, 0);
+    UnloadDroppedFiles(pathList);
+    return janet_wrap_nil();
 }
 
 static Janet cfun_OpenUrl(int32_t argc, Janet *argv) {
@@ -936,10 +918,8 @@ static JanetReg core_cfuns[] = {
     {"get-touch-x", cfun_GetTouchX, NULL},
     {"get-touch-y", cfun_GetTouchY, NULL},
     {"get-touch-position", cfun_GetTouchPosition, NULL},
-    {"get-dropped-files", cfun_GetDroppedFiles, NULL},
-    {"clear-dropped-files", cfun_ClearDroppedFiles, NULL},
-    {"save-storage-value", cfun_SaveStorageValue, NULL},
-    {"load-storage-value", cfun_LoadStorageValue, NULL},
+    {"load-dropped-files", cfun_LoadDroppedFiles, NULL},
+    {"unload-dropped-files", cfun_UnloadDroppedFiles, NULL},
     {"open-url", cfun_OpenUrl, NULL},
     {"set-window-icon", cfun_SetWindowIcon, NULL},
     {"begin-mode-3d", cfun_BeginMode3D, NULL},
