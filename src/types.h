@@ -599,7 +599,7 @@ int font_get(void *p, Janet key, Janet *out) {
 
   if (!janet_cstrcmp(kw, "texture")) {
     Texture2D *texture = janet_abstract(&AT_Texture2D, sizeof(Texture2D));
-    texture = &font->texture;
+    texture = font->texture;
     *out = janet_wrap_abstract(texture);
     return 1;
   }
