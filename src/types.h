@@ -513,7 +513,7 @@ static Texture2D *jaylib_gettexture2d(const Janet *argv, int32_t n) {
 
 int texture2d_get(void* p, Janet key, Janet *out) {
 	Texture2D *texture = (Texture2D *) p;
-	
+
 	if (!janet_checktype(key, JANET_KEYWORD)) {
 		janet_panic("expected keyword");
 	}
@@ -524,12 +524,12 @@ int texture2d_get(void* p, Janet key, Janet *out) {
 		*out = janet_wrap_integer(texture->width);
 		return 1;
 	}
-	
+
 	if (!janet_cstrcmp(kw, "height")) {
 		*out = janet_wrap_integer(texture->height);
 		return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -578,10 +578,34 @@ static AudioStream *jaylib_getaudiostream(const Janet *argv, int32_t n) {
     return ((AudioStream *)janet_getabstract(argv, n, &AT_AudioStream));
 }
 
+int font_get(void *p, Janet key, Janet *out);
+
 static const JanetAbstractType AT_Font = {
-    "jaylib/font",
-    JANET_ATEND_NAME
+  "jaylib/font",
+  NULL,
+  NULL,
+  font_get,
+  JANET_ATEND_GET
 };
+
+int font_get(void *p, Janet key, Janet *out) {
+  Font *font = (Font *)p;
+
+  if (!janet_checktype(key, JANET_KEYWORD)) {
+    janet_panic("expected keyword");
+  }
+
+  const uint8_t *kw = janet_unwrap_keyword(key);
+
+  if (!janet_cstrcmp(kw, "texture")) {
+    Texture2D *texture = janet_abstract(&AT_Texture2D, sizeof(Texture2D));
+    texture = &font->texture;
+    *out = janet_wrap_abstract(texture);
+    return 1;
+  }
+
+  return 0;
+}
 
 static Font *jaylib_getfont(const Janet *argv, int32_t n) {
     return ((Font *)janet_getabstract(argv, n, &AT_Font));
